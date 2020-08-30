@@ -1,13 +1,183 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body{
+  background: #ff7961;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app{
+  font-family: 'Roboto', sans-serif;
+}
+
+.form-control:focus{
+  border-color: #f44336;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+.container{
+  width: 100%;
+  height: 100%;
+  margin: 100px auto;
+}
+
+.location{
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.flag{
+  margin-left: 8px;
+}
+
+.flag-icon{
+  padding-top: 3px;
+}
+
+.city, .date{
+  color:#424242;
+  margin-left: 15px;
+}
+
+.city{
+  font-size: 26px;
+}
+
+.date{
+  font-size: 17px;
+  margin-top: 1px;
+  color:gray
+}
+
+.weather{
+  margin-top: 20px;
+  margin-bottom:5px;
+}
+
+.description{
+  margin-left: 15px;
+  font-size: 17px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.bottomStats{
+  padding-top:1px;
+  margin-left:15px;
+}
+
+.precipitation, .humidity{
+  color:gray;
+  font-size:17px;
+}
+
+hr{
+  border-width: 2.0px;
+  border-color:gray;
+}
+
+.footer{
+  padding:2px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.card-footer{
+  height: 10%;
+}
+
+.footer-icon{
+  font-size:25px;
+  color:gray;
+  padding-right: 8px;
+}
+
+
+#search{
+  border-radius: 50px;
+}
+
+.dark{
+  position: absolute;
+  display: inline;
+  margin-left: 15px;
+	width: 70px;
+	height: 70px;
+	background: #455a64;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px;
+}
+
+.maxTemp{
+  color:'#757575';
+  font-size: 25;
+  font-weight: 400;
+}
+
+.minTemp{
+  color:'#757575';
+  font-size: 25;
+  font-weight: 400;
+}
+
+.Rain{
+  margin-left: 15px;
+	font-size: 50px;
+	color: #90caf9;
+}
+
+
+.Clouds, .Mist, .Haze{
+  margin-left: 15px;
+	font-size: 50px;
+	color: #546e7a;
+}
+
+
+.Clear{
+  /* position: absolute;
+  display: inline; */
+  margin-left: 15px;
+	font-size: 50px;
+	color: #FFC107;
+	/* -moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	border-radius: 50px; */
+}
+
+.Night{
+  color: #546e7a;
+  margin-left: 15px;
+	font-size: 50px;
+}
+
+.maxMinTemps{
+  color:gray;
+  margin-top:10px;
+  display: flex;
+  flex-direction: row;
+  margin-left: 15px;
+}
+
+.maxTemp{
+  font-size:12;
+}
+
+.minTemp{
+  font-size:12;
+}
+
+.arrow-icon{
+  color: gray;
+  font-size: 15px;
+  margin-right: 15px;
+  padding-bottom: 6px;
+  padding-left:2px
+}
+
+.temp{
+  color:#424242;
+  font-weight: 300;
+  padding-left: 10px;
+  font-size: 50px;
 }
