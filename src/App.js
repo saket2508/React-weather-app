@@ -86,7 +86,7 @@ function App() {
   },[])
 
   const getData = async() => {
-
+    setLoading(true)
     if("geolocation" in navigator){
       console.log('Location access enabled')
       try{
@@ -105,7 +105,7 @@ function App() {
 
           //console.log(coordinates)
 
-          setLoading(true)
+          //setLoading(true)
           let res = await fetch(`${api.base}?lat=${latitude}&lon=${longitude}&units=metric&appid=${api.key}`)
           let result = await res.json()
           console.log(result)
@@ -134,7 +134,7 @@ function App() {
 
     else{
       console.log('Location access disabled')
-      setLoading(true)
+      //setLoading(true)
       try{
         let res = await fetch(`${api.base}?q=Mumbai&units=metric&appid=${api.key}`)
         let result = await res.json()
