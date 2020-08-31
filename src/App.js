@@ -163,41 +163,47 @@ function App() {
   }
 
   const search = async() => {
-    setLoading(true)
+
     console.log(query)
-    try{
-      let res= await fetch(`${api.base}?q=${query}&units=metric&appid=${api.key}`)
-      let result = await res.json()
-      if(result.cod==="404"){
-        console.log('Could not get data from API.')
-        setError(true)
-        setQuery('')
-        setLoading(false)
-      }
-      else{
-        if(error){
-          setError(false)
+    if(query!=""){
+      setLoading(true)
+      try{
+        let res= await fetch(`${api.base}?q=${query}&units=metric&appid=${api.key}`)
+        let result = await res.json()
+        if(result.cod==="404"){
+          console.log('Could not get data from API.')
+          setError(true)
+          setQuery('')
+          setLoading(false)
         }
-        setQuery('')
+        else{
+          if(error){
+            setError(false)
+          }
+          setQuery('')
+          setLoading(false)
+          dateBuilder(result.timezone)
+          setWeather({
+            name: result.name,
+            country: result.sys.country,
+            temp: (result.main.temp).toFixed(0),
+            minTemp: (result.main.temp_min).toFixed(0),
+            maxTemp: (result.main.temp_max).toFixed(0),
+            feelsLike: (result.main.feels_like).toFixed(0),
+            humidity: result.main.humidity,
+            description: result.weather[0].main
+          })
+          console.log(result)
+        }
+      }
+      catch(error){
+        console.log('Could not get data from API.')
+        console.log(error)
         setLoading(false)
-        dateBuilder(result.timezone)
-        setWeather({
-          name: result.name,
-          country: result.sys.country,
-          temp: (result.main.temp).toFixed(0),
-          minTemp: (result.main.temp_min).toFixed(0),
-          maxTemp: (result.main.temp_max).toFixed(0),
-          feelsLike: (result.main.feels_like).toFixed(0),
-          humidity: result.main.humidity,
-          description: result.weather[0].main
-        })
-        console.log(result)
       }
     }
-    catch(error){
-      console.log('Could not get data from API.')
-      console.log(error)
-      setLoading(false)
+    else{
+      console.log("Could no accept input")
     }
    
   }
