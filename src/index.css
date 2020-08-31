@@ -37,7 +37,7 @@ body{
 }
 
 .city{
-  font-size: 26px;
+  font-size: 22px;
 }
 
 .date{
@@ -127,10 +127,16 @@ hr{
 }
 
 
-.Clouds, .Mist, .Haze{
+.Clouds, .Mist, .Haze, .Smoke{
   margin-left: 15px;
 	font-size: 50px;
 	color: #546e7a;
+}
+
+.Clouds-morning{
+  margin-left: 15px;
+	font-size: 50px;
+	color: #90caf9;
 }
 
 

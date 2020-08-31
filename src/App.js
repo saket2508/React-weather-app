@@ -28,7 +28,7 @@ function WeatherIcon(description, day){
       )
     }
   }
-  else if(description.includes("Rain")){
+  else if(description.includes("Rain") || description==="Drizzle"){
     return(
       <div className="Rain">
           <i class="fas fa-cloud-rain"></i>
@@ -36,11 +36,20 @@ function WeatherIcon(description, day){
     )
   }
   else if(description==="Clouds"){
-    return(
-      <div className={description}>
-          <i class="fas fa-cloud"></i>
-      </div>
-    )
+    if(day){
+     return(
+      <div className="Clouds-morning">
+      <i class="fas fa-cloud"></i>
+    </div>
+     )
+    }
+    else{
+      return(
+        <div className={description}>
+            <i class="fas fa-cloud"></i>
+        </div>
+      )
+    }
   }
   else{
     return(
@@ -65,52 +74,93 @@ function App() {
   }
 
   const [ query, setQuery ] = useState('');
+  const [ coordinates, setCoordinates ] = useState({lat:0,lon:0})
   const [ day, setDay ] = useState(false)
   const [ error, setError ] = useState(false);
   const [ weather, setWeather] = useState(initialState);
   const [ loading, setLoading]= useState(false);
   const [ localTime, setLocalTime ] = useState("")
 
-  const getData = async() => {
-    if("geolocation" in navigator){
-      console.log('Location access enabled')
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position)
-      });
-    }
-    else{
-      console.log('Location access disabled')
-    }
-    setLoading(true)
-    try{
-      let res = await fetch(`${api.base}?q=Mumbai&units=metric&appid=${api.key}`)
-      let result = await res.json()
-      console.log(result)
-      setWeather({
-        name: result.name,
-        country: result.sys.country,
-        temp: (result.main.temp).toFixed(0),
-        minTemp: (result.main.temp_min).toFixed(0),
-        maxTemp: (result.main.temp_max).toFixed(0),
-        feelsLike: (result.main.feels_like).toFixed(0),
-        humidity: result.main.humidity,
-        description: result.weather[0].main
-      })
-      
-      console.log(dateBuilder(result.timezone))
-      setQuery('')
-      setLoading(false)
-    }
-    catch(error){
-      console.log(error)
-      setError(true)
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
     getData()
   },[])
+
+  const getData = async() => {
+
+    if("geolocation" in navigator){
+      console.log('Location access enabled')
+      try{
+        await navigator.geolocation.getCurrentPosition(async(position) => {
+          console.log(position)
+          console.log("Latitude is :", position.coords.latitude);
+          console.log("Longitude is :", position.coords.longitude);
+  
+          const latitude = (position.coords.latitude).toFixed(1)
+          const longitude = (position.coords.longitude).toFixed(1)
+          
+          setCoordinates({
+            lat: Number(latitude),
+            lon: Number(longitude)
+          })
+
+          //console.log(coordinates)
+
+          setLoading(true)
+          let res = await fetch(`${api.base}?lat=${latitude}&lon=${longitude}&units=metric&appid=${api.key}`)
+          let result = await res.json()
+          console.log(result)
+          setWeather({
+            name: result.name,
+            country: result.sys.country,
+            temp: (result.main.temp).toFixed(0),
+            minTemp: (result.main.temp_min).toFixed(0),
+            maxTemp: (result.main.temp_max).toFixed(0),
+            feelsLike: (result.main.feels_like).toFixed(0),
+            humidity: result.main.humidity,
+            description: result.weather[0].main
+          })
+
+          console.log(dateBuilder(result.timezone))
+          setQuery('')
+          setLoading(false)
+        });
+      }
+      catch(error){
+        console.log(error)
+        setError(true)
+        setLoading(false)
+      }
+    }
+
+    else{
+      console.log('Location access disabled')
+      setLoading(true)
+      try{
+        let res = await fetch(`${api.base}?q=Mumbai&units=metric&appid=${api.key}`)
+        let result = await res.json()
+        console.log(result)
+        setWeather({
+          name: result.name,
+          country: result.sys.country,
+          temp: (result.main.temp).toFixed(0),
+          minTemp: (result.main.temp_min).toFixed(0),
+          maxTemp: (result.main.temp_max).toFixed(0),
+          feelsLike: (result.main.feels_like).toFixed(0),
+          humidity: result.main.humidity,
+          description: result.weather[0].main
+        })
+        
+        console.log(dateBuilder(result.timezone))
+        setQuery('')
+        setLoading(false)
+      }
+      catch(error){
+        console.log(error)
+        setError(true)
+        setLoading(false)
+      }
+    }
+  }
 
   const search = async() => {
     setLoading(true)
@@ -267,10 +317,10 @@ function App() {
                 <h5 className="text-center" style={{color:'white',letterSpacing:1.0, paddingTop:10}}>FORECAST FINDER</h5>
               </div>
               <div className="card-body">   
-                  <div style={{paddingTop:100, paddingBottom:100}}>
+                  <div style={{paddingTop:160, paddingBottom:160}}>
                       <div style={{display:'flex',flexDirection:'row', justifyContent:'center'}}>
                         <ErrorOutlineIcon style={{paddingBottom:5, color:'#dc3545'}}/>
-                        <h6 className="text-danger" style={{fontWeight:'500', marginLeft:3}}>Please enter a valid city.</h6>
+                        <h5 className="text-danger" style={{fontWeight:'500', marginLeft:3}}>Please enter a valid city.</h5>
                       </div>
                   </div>
               </div>
