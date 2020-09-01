@@ -17,7 +17,7 @@ export default function SearchBar({ props }){
                   onChange={e => props.setQuery(e.target.value)}
                   value={props.query}
                   />
-                <div class="input-group-append">
+                <div className="input-group-append">
                   <button className="btn btn-outline-danger" type="submit" id="weather input" style={{backgroundColor:'#f44336'}} onClick={props.search}>
                     <SearchIcon style={{color:'#fff'}}/>
                   </button>

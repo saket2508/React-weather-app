@@ -11,8 +11,10 @@ const api= {
 
 
 const WeatherIcon = (description, day) => {
+  console.log(day)
   if(description==="Clear"){
     if(day){
+      console.log('Should display')
       return(
         <div className="Clear">
             <i class="fas fa-sun"></i>
@@ -27,10 +29,24 @@ const WeatherIcon = (description, day) => {
       )
     }
   }
-  else if(description.includes("Rain") || description==="Drizzle"){
+  else if(description==="Drizzle"){
+    return(
+      <div className="Drizzle">
+          <i class="fas fa-cloud-rain"></i>
+      </div>
+    )
+  }
+  else if(description==="Rain"){
     return(
       <div className="Rain">
-          <i class="fas fa-cloud-rain"></i>
+          <i class="fas fa-cloud-showers-heavy"></i>
+      </div>
+    )
+  }
+  else if(description==="Thunderstorm"){
+    return(
+      <div className="Thunderstorm">
+          <i class="fas fa-cloud-showers-heavy"></i>
       </div>
     )
   }
@@ -60,7 +76,6 @@ const WeatherIcon = (description, day) => {
 }
 
 function App() {
-
   const initialState= {
     name:"",
     country: "",
@@ -69,7 +84,7 @@ function App() {
     maxTemp: 0,
     feelsLike:0,
     humidity: 0,
-    description: ""
+    description: "",
   }
 
   const [ query, setQuery ] = useState('');
@@ -115,7 +130,7 @@ function App() {
             maxTemp: (result.main.temp_max).toFixed(0),
             feelsLike: (result.main.feels_like).toFixed(0),
             humidity: result.main.humidity,
-            description: result.weather[0].main
+            description: result.weather[0].main,
           })
 
           console.log(dateBuilder(result.timezone))
@@ -151,7 +166,7 @@ function App() {
           maxTemp: (result.main.temp_max).toFixed(0),
           feelsLike: (result.main.feels_like).toFixed(0),
           humidity: result.main.humidity,
-          description: result.weather[0].main
+          description: result.weather[0].main,
         })
         
         console.log(dateBuilder(result.timezone))
@@ -169,7 +184,7 @@ function App() {
   const search = async() => {
 
     console.log(query)
-    if(query!=""){
+    if(query!==""){
       setLoading(true)
       try{
         let res= await fetch(`${api.base}?q=${query}&units=metric&appid=${api.key}`)
@@ -184,9 +199,14 @@ function App() {
           if(error){
             setError(false)
           }
+          let short = query
           setQuery('')
           setLoading(false)
           dateBuilder(result.timezone)
+
+          if(result.name.length>15){
+            result.name = short
+          }
           setWeather({
             name: result.name,
             country: result.sys.country,
@@ -195,7 +215,7 @@ function App() {
             maxTemp: (result.main.temp_max).toFixed(0),
             feelsLike: (result.main.feels_like).toFixed(0),
             humidity: result.main.humidity,
-            description: result.weather[0].main
+            description: result.weather[0].main,
           })
           console.log(result)
         }
@@ -228,9 +248,11 @@ function App() {
 
     if(hour > 18 || hour < 6){
       setDay(false)
+      console.log("It's night")
     }
     else{
       setDay(true)
+      console.log("It's day")
     }
     
     let time = nd.toLocaleTimeString().slice(0,5)
@@ -297,7 +319,7 @@ function App() {
           maxTemp: weather.maxTemp,
           minTemp: weather.minTemp,
           humidity: weather.humidity,
-          day: weather.day,
+          day: day,
           WeatherIcon: WeatherIcon,
          }
        }}/>

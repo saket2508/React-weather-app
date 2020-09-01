@@ -21,8 +21,10 @@ body{
 .location{
   padding-top: 10px;
   padding-bottom: 5px;
-  display: flex;
+  /* display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap; */
 }
 
 .flag{
@@ -30,7 +32,7 @@ body{
 }
 
 .flag-icon{
-  margin-top: 1px;
+  margin-top: 3px;
 }
 
 .city, .date{
@@ -39,7 +41,7 @@ body{
 }
 
 .city{
-  font-size: 22px;
+  font-size: 25px;
 }
 
 .date{
@@ -54,6 +56,7 @@ body{
 }
 
 .description{
+  padding-top: 5px;
   margin-left: 15px;
   font-size: 17px;
   line-height: 20px;
@@ -64,6 +67,18 @@ body{
 .bottomStats{
   padding-top:1px;
   margin-left:15px;
+}
+
+.sunrise-sunset{
+  padding-top:4px;
+  margin-left:15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.sunrise, .sunset{
+  margin-right: 15px;
+  color: gray;
 }
 
 .precipitation, .humidity{
@@ -126,10 +141,16 @@ hr{
   font-weight: 400;
 }
 
-.Rain{
+.Rain, .Drizzle{
   margin-left: 15px;
 	font-size: 50px;
 	color: #90caf9;
+}
+
+.Thunderstorm{
+  margin-left: 15px;
+	font-size: 50px;
+	color: #546e7a;
 }
 
 

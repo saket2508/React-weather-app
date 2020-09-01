@@ -17,9 +17,14 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(3),
   },
   medium:{
-    marginTop: theme.spacing(0.25),
-    width: theme.spacing(3.5),
-    height: theme.spacing(3.5),
+    marginTop: theme.spacing(0.5),
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '2px',
+    transform: 'scale(0.8)',
   },
   large: {
     marginTop: theme.spacing(0.5),
@@ -32,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CardWeather({ weather }){
   const classes = useStyles();
+  const bull = <span>•</span>;
     return(
       <div className="row" style={{display:'flex',justifyContent:'center'}}>
       <div className="col-lg-5 col-sm-10">
@@ -40,11 +46,11 @@ export default function CardWeather({ weather }){
           <h5 className="text-center" style={{color:'white',letterSpacing:1.0, paddingTop:10}}>WEATHER FINDER</h5>
         </div>
        <div className="card-body">
-       <div className="location">
+       <div className="location d-flex flex-row flex-wrap">
          <div className="city">{weather.name}, {weather.country}</div>
          <div className="flag">
-           <img className="flag-icon" src={`https://www.countryflags.io/${weather.country}/flat/32.png`}/> 
-           {/* <Avatar alt= {weather.country} src={`https://disease.sh/assets/img/flags/${weather.country.toLowerCase()}.png`} className={classes.medium}/> */}
+           {/* <img className="flag-icon" src={`https://www.countryflags.io/${weather.country}/flat/32.png`}/>  */}
+           <Avatar alt= {weather.country} src={`https://disease.sh/assets/img/flags/${weather.country.toLowerCase()}.png`} className={classes.medium}/>
          </div>
        </div>
 
@@ -73,7 +79,6 @@ export default function CardWeather({ weather }){
          <div className="arrow-icon">
            <ArrowUpwardIcon style={{fontSize:'20'}}/>
          </div>
-         
          <div className="minTemp">
            Night {weather.minTemp}°C
          </div>
@@ -87,7 +92,6 @@ export default function CardWeather({ weather }){
            Humidity: {weather.humidity}%
          </div>
        </div>
-
        <div>
        </div>
        </div>
