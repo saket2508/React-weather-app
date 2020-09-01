@@ -6,6 +6,11 @@
 
 2. #### Uses [OpenWeather API](https://openweathermap.org/api) for live weather data.
 
+
+3. #### After cloning this repo, run the following in your terminal.  
+    #### `npm install`
+    #### `npm start`
+
 <!-- ## Available Scripts
 
 In the project directory, you can run:
