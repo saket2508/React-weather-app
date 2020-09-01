@@ -1,6 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## React weather app
+
+1. #### A weather app made with React.js. You can see weather info for your current location as soon as the site loads(Location access needed). You can also search for any specific city/town/country to see info of its weather.
+
+
+2. #### Uses [OpenWeather API](https://openweathermap.org/api) for live weather data.
+
+<!-- ## Available Scripts
 
 In the project directory, you can run:
 
@@ -66,4 +72,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-"# React-weather-app" 
+"# React-weather-app"  -->
