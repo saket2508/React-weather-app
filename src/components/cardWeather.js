@@ -37,9 +37,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CardWeather({ weather }){
   const classes = useStyles();
-  const bull = <span>•</span>;
+  const bull = <span>•</span>
     return(
-      <div className="row" style={{display:'flex',justifyContent:'center'}}>
+      <div className="row mb-3" style={{display:'flex',justifyContent:'center'}}>
       <div className="col-lg-5 col-sm-10">
       <div class="card border-0">
         <div className="card-header" style={{backgroundColor:'#f44336'}}>
@@ -49,8 +49,8 @@ export default function CardWeather({ weather }){
        <div className="location d-flex flex-row flex-wrap">
          <div className="city">{weather.name}, {weather.country}</div>
          <div className="flag">
-           {/* <img className="flag-icon" src={`https://www.countryflags.io/${weather.country}/flat/32.png`}/>  */}
-           <Avatar alt= {weather.country} src={`https://disease.sh/assets/img/flags/${weather.country.toLowerCase()}.png`} className={classes.medium}/>
+           <img className="flag-icon" src={`https://www.countryflags.io/${weather.country}/flat/32.png`}/>
+           {/* <Avatar alt= {weather.country} src={`https://disease.sh/assets/img/flags/${weather.country.toLowerCase()}.png`} className={classes.medium}/> */}
          </div>
        </div>
 
@@ -67,20 +67,20 @@ export default function CardWeather({ weather }){
          <div style={{display:'flex', flexDirection:'row'}}>
           {weather.WeatherIcon(weather.description, weather.day)}
            <div className="temp">
-             {weather.temp}°C
+             {weather.temp}{weather.unit}
            </div>
          </div>  
        </div>
 
        <div className="maxMinTemps">
          <div className="maxTemp">
-           Day {weather.maxTemp}°C
+           Day {weather.maxTemp}{weather.unit}
          </div>
          <div className="arrow-icon">
            <ArrowUpwardIcon style={{fontSize:'20'}}/>
          </div>
          <div className="minTemp">
-           Night {weather.minTemp}°C
+           Night {weather.minTemp}{weather.unit}
          </div>
          <div className="arrow-icon">
            <ArrowDownwardIcon style={{fontSize:'20'}}/>
@@ -88,19 +88,42 @@ export default function CardWeather({ weather }){
        </div>
 
        <div className="bottomStats">
-         <div className="precipitation">
+         <div className="humidity" style={{marginRight: 15}}>
            Humidity: {weather.humidity}%
          </div>
+          <div className="precipitation">
+            Precip: {weather.precipitation}%
+          </div>
        </div>
+
+      <div className="sunrise-sunset">
+        <div className="timings" style={{marginRight: 15, display:'flex',flexDirection:'row'}}>
+          Sunrise/Sunset:
+          <div style={{marginLeft:5}}>
+            {weather.sunrise}, {weather.sunset}
+          </div>
+        </div>
+      </div>
+
+      <div className="wind">
+        <div style={{marginRight:15, display:'flex',flexDirection:'row'}}>
+          Wind:
+          <div style={{marginLeft:5}}>
+            {weather.windSpeed} {weather.unit2}, {weather.direction}
+          </div>
+        </div>
+      </div>
+
        <div>
        </div>
        </div>
 
-       <div style={{marginTop:20}} className="row d-flex justify-content-center">
+       <div style={{marginTop:10}} className="row d-flex justify-content-center">
          <div className="col-10">
            <hr></hr>
          </div>
        </div>
+
        <div className="footer">
            <div className="footer-icon">
                <a className='text-secondary' href="https://github.com/saket2508">
@@ -117,7 +140,7 @@ export default function CardWeather({ weather }){
                <i class="far fa-envelope"></i>
              </a>
            </div> 
-         </div>
+        </div>
 
      </div>
       </div>

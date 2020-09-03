@@ -3,10 +3,13 @@ import CardLoading from './components/cardLoading';
 import CardWeather from './components/cardWeather';
 import CardError from './components/cardError';
 import SearchBar from './components/searchBar';
+import UnitOptions from './components/unitOptions';
+import { deepOrange } from '@material-ui/core/colors';
+
 
 const api= {
   key:"ce50fd0f772786ff9691170871093723",
-  base:"https://api.openweathermap.org/data/2.5/weather"
+  base:"https://api.openweathermap.org/data/2.5/forecast"
 }
 
 
@@ -84,7 +87,13 @@ function App() {
     maxTemp: 0,
     feelsLike:0,
     humidity: 0,
+    precipitation:0,
     description: "",
+    sunrise:"",
+    sunset:"",
+    windSpeed:0,
+    forecast:[],
+    direction:"",
   }
 
   const [ query, setQuery ] = useState('');
@@ -94,6 +103,9 @@ function App() {
   const [ weather, setWeather] = useState(initialState);
   const [ loading, setLoading]= useState(false);
   const [ localTime, setLocalTime ] = useState("")
+  const [ system, setSystem ] = useState("metric")
+  const [ unit, setUnit ] = useState("°C")
+  const [ unit2, setUnit2 ] = useState("km/h")
 
   useEffect(() => {
     getData()
@@ -119,21 +131,49 @@ function App() {
           //console.log(coordinates)
 
           //setLoading(true)
-          let res = await fetch(`${api.base}?lat=${latitude}&lon=${longitude}&units=metric&appid=${api.key}`)
+          let res = await fetch(`${api.base}?lat=${latitude}&lon=${longitude}&units=${system}&appid=${api.key}`)
           let result = await res.json()
           console.log(result)
-          setWeather({
-            name: result.name,
-            country: result.sys.country,
-            temp: (result.main.temp).toFixed(0),
-            minTemp: (result.main.temp_min).toFixed(0),
-            maxTemp: (result.main.temp_max).toFixed(0),
-            feelsLike: (result.main.feels_like).toFixed(0),
-            humidity: result.main.humidity,
-            description: result.weather[0].main,
-          })
+          console.log('Sunrise- '+getTime(result.city.sunrise, result.city.timezone))
+          console.log('Sunset- '+getTime(result.city.sunset, result.city.timezone))
+          
+          let direction = checkWindDirection(result.list[0].wind.deg)
 
-          console.log(dateBuilder(result.timezone))
+          if(system==="metric"){
+            setWeather({
+              name: result.city.name,
+              country: result.city.country,
+              temp: (result.list[0].main.temp).toFixed(0),
+              minTemp: (result.list[0].main.temp_min).toFixed(0),
+              maxTemp: (result.list[0].main.temp_max).toFixed(0),
+              feelsLike: (result.list[0].main.feels_like).toFixed(0),
+              humidity: result.list[0].main.humidity,
+              description: result.list[0].weather[0].main,
+              precipitation: ((result.list[0].pop)*100).toFixed(0),
+              sunrise:getTime(result.city.sunrise, result.city.timezone),
+              sunset:getTime(result.city.sunset, result.city.timezone),
+              windSpeed: ((result.list[0].wind.speed)*3.6).toFixed(0),
+              direction: direction
+            })
+          }
+          else{
+            setWeather({
+              name: result.city.name,
+              country: result.city.country,
+              temp: (result.list[0].main.temp).toFixed(0),
+              minTemp: (result.list[0].main.temp_min).toFixed(0),
+              maxTemp: (result.list[0].main.temp_max).toFixed(0),
+              feelsLike: (result.list[0].main.feels_like).toFixed(0),
+              humidity: result.list[0].main.humidity,
+              description: result.list[0].weather[0].main,
+              precipitation: ((result.list[0].pop)*100).toFixed(0),
+              sunrise:getTime(result.city.sunrise, result.city.timezone),
+              sunset:getTime(result.city.sunset, result.city.timezone),
+              windSpeed: (result.list[0].wind.speed).toFixed(0),
+              direction: direction
+            })
+          }
+          console.log(dateBuilder(result.city.timezone))
           setQuery('')
           setLoading(false)
         });
@@ -155,21 +195,48 @@ function App() {
       console.log('Location access disabled')
       //setLoading(true)
       try{
-        let res = await fetch(`${api.base}?q=Mumbai&units=metric&appid=${api.key}`)
+        let res = await fetch(`${api.base}?q=Mumbai&units=${system}c&appid=${api.key}`)
         let result = await res.json()
         console.log(result)
-        setWeather({
-          name: result.name,
-          country: result.sys.country,
-          temp: (result.main.temp).toFixed(0),
-          minTemp: (result.main.temp_min).toFixed(0),
-          maxTemp: (result.main.temp_max).toFixed(0),
-          feelsLike: (result.main.feels_like).toFixed(0),
-          humidity: result.main.humidity,
-          description: result.weather[0].main,
+        let direction = checkWindDirection(result.list[0].wind.deg)
+        if(system==="metric"){
+          setWeather({
+            name: result.city.name,
+            country: result.city.country,
+            temp: (result.list[0].main.temp).toFixed(0),
+            minTemp: (result.list[0].main.temp_min).toFixed(0),
+            maxTemp: (result.list[0].main.temp_max).toFixed(0),
+            feelsLike: (result.list[0].main.feels_like).toFixed(0),
+            humidity: result.list[0].main.humidity,
+            description: result.list[0].weather[0].main,
+            precipitation: ((result.list[0].pop)*100).toFixed(0),
+            sunrise:getTime(result.city.sunrise, result.city.timezone),
+            sunset:getTime(result.city.sunset, result.city.timezone),
+            windSpeed: ((result.list[0].wind.speed)*3.6).toFixed(0),
+            direction: direction,
+          })
+        }
+        else{
+          setWeather({
+            name: result.city.name,
+            country: result.city.country,
+            temp: (result.list[0].main.temp).toFixed(0),
+            minTemp: (result.list[0].main.temp_min).toFixed(0),
+            maxTemp: (result.list[0].main.temp_max).toFixed(0),
+            feelsLike: (result.list[0].main.feels_like).toFixed(0),
+            humidity: result.list[0].main.humidity,
+            description: result.list[0].weather[0].main,
+            precipitation: ((result.list[0].pop)*100).toFixed(0),
+            sunrise:getTime(result.city.sunrise, result.city.timezone),
+            sunset:getTime(result.city.sunset, result.city.timezone),
+            windSpeed: (result.list[0].wind.speed).toFixed(0),
+            direction: direction,
         })
-        
-        console.log(dateBuilder(result.timezone))
+        }
+        // console.log('Sunrise- '+getTime(result.city.sunrise, result.city.timezone))
+        // console.log('Sunset- '+getTime(result.city.sunset, result.city.timezone))
+
+        console.log(dateBuilder(result.city.timezone))
         setQuery('')
         setLoading(false)
       }
@@ -186,50 +253,164 @@ function App() {
     console.log(query)
     if(query!==""){
       setLoading(true)
-      try{
-        let res= await fetch(`${api.base}?q=${query}&units=metric&appid=${api.key}`)
-        let result = await res.json()
-        if(result.cod==="404"){
-          console.log('Could not get data from API.')
-          setError(true)
-          setQuery('')
-          setLoading(false)
+      if(!query.includes(",")){
+        try{
+          let res= await fetch(`${api.base}?q=${query}&units=${system}&appid=${api.key}`)
+          let result = await res.json()
+          if(result.cod==="404"){
+            console.log('Could not get data from API.')
+            setError(true)
+            setQuery('')
+            setLoading(false)
+          }
+          else{
+            if(error){
+              setError(false)
+            }
+            let short = query
+            setQuery('')
+            setLoading(false)
+            console.log('Sunrise- '+getTime(result.city.sunrise, result.city.timezone))
+            console.log('Sunset- '+getTime(result.city.sunset, result.city.timezone))
+            dateBuilder(result.city.timezone)
+  
+            if(result.city.name.length>15){
+              result.city.name = short
+            }
+            let direction = checkWindDirection(result.list[0].wind.deg)
+            if(system==="metric"){
+              setWeather({
+                name: result.city.name,
+                country: result.city.country,
+                temp: (result.list[0].main.temp).toFixed(0),
+                minTemp: (result.list[0].main.temp_min).toFixed(0),
+                maxTemp: (result.list[0].main.temp_max).toFixed(0),
+                feelsLike: (result.list[0].main.feels_like).toFixed(0),
+                humidity: result.list[0].main.humidity,
+                description: result.list[0].weather[0].main,
+                precipitation: ((result.list[0].pop)*100).toFixed(0),
+                sunrise:getTime(result.city.sunrise, result.city.timezone),
+                sunset:getTime(result.city.sunset, result.city.timezone),
+                windSpeed: ((result.list[0].wind.speed)*3.6).toFixed(0),
+                direction:direction
+              })
+            }
+            else{
+              setWeather({
+                name: result.city.name,
+                country: result.city.country,
+                temp: (result.list[0].main.temp).toFixed(0),
+                minTemp: (result.list[0].main.temp_min).toFixed(0),
+                maxTemp: (result.list[0].main.temp_max).toFixed(0),
+                feelsLike: (result.list[0].main.feels_like).toFixed(0),
+                humidity: result.list[0].main.humidity,
+                description: result.list[0].weather[0].main,
+                precipitation: ((result.list[0].pop)*100).toFixed(0),
+                sunrise:getTime(result.city.sunrise, result.city.timezone),
+                sunset:getTime(result.city.sunset, result.city.timezone),
+                windSpeed: (result.list[0].wind.speed).toFixed(0),
+                direction: direction,
+              })
+            }
+            console.log(result)
+          }
         }
-        else{
-          if(error){
-            setError(false)
-          }
-          let short = query
-          setQuery('')
+        catch(error){
+          console.log('Could not get data from API.')
+          console.log(error)
           setLoading(false)
-          dateBuilder(result.timezone)
-
-          if(result.name.length>15){
-            result.name = short
-          }
-          setWeather({
-            name: result.name,
-            country: result.sys.country,
-            temp: (result.main.temp).toFixed(0),
-            minTemp: (result.main.temp_min).toFixed(0),
-            maxTemp: (result.main.temp_max).toFixed(0),
-            feelsLike: (result.main.feels_like).toFixed(0),
-            humidity: result.main.humidity,
-            description: result.weather[0].main,
-          })
-          console.log(result)
         }
       }
-      catch(error){
-        console.log('Could not get data from API.')
-        console.log(error)
-        setLoading(false)
+      else{
+        let country_code = query.slice(-2)
+        let city_name = query.slice(0,-3)
+        try{
+          let res= await fetch(`${api.base}?q=${city_name},${country_code}&units=${system}&appid=${api.key}`)
+          let result = await res.json()
+          if(result.cod==="404"){
+            console.log('Could not get data from API.')
+            setError(true)
+            setQuery('')
+            setLoading(false)
+          }
+          else{
+            if(error){
+              setError(false)
+            }
+            let short = query
+            setQuery('')
+            setLoading(false)
+            console.log('Sunrise- '+getTime(result.city.sunrise, result.city.timezone))
+            console.log('Sunset- '+getTime(result.city.sunset, result.city.timezone))
+            dateBuilder(result.city.timezone)
+  
+            if(result.city.name.length>15){
+              result.city.name = short
+            }
+            let direction = checkWindDirection(result.list[0].wind.deg)
+            if(system==="metric"){
+              setWeather({
+                name: result.city.name,
+                country: result.city.country,
+                temp: (result.list[0].main.temp).toFixed(0),
+                minTemp: (result.list[0].main.temp_min).toFixed(0),
+                maxTemp: (result.list[0].main.temp_max).toFixed(0),
+                feelsLike: (result.list[0].main.feels_like).toFixed(0),
+                humidity: result.list[0].main.humidity,
+                description: result.list[0].weather[0].main,
+                precipitation: ((result.list[0].pop)*100).toFixed(0),
+                sunrise:getTime(result.city.sunrise, result.city.timezone),
+                sunset:getTime(result.city.sunset, result.city.timezone),
+                windSpeed: ((result.list[0].wind.speed)*3.6).toFixed(0),
+                direction: direction
+              })
+            }
+            else{
+              setWeather({
+                name: result.city.name,
+                country: result.city.country,
+                temp: (result.list[0].main.temp).toFixed(0),
+                minTemp: (result.list[0].main.temp_min).toFixed(0),
+                maxTemp: (result.list[0].main.temp_max).toFixed(0),
+                feelsLike: (result.list[0].main.feels_like).toFixed(0),
+                humidity: result.list[0].main.humidity,
+                description: result.list[0].weather[0].main,
+                precipitation: ((result.list[0].pop)*100).toFixed(0),
+                sunrise:getTime(result.city.sunrise, result.city.timezone),
+                sunset:getTime(result.city.sunset, result.city.timezone),
+                windSpeed: (result.list[0].wind.speed).toFixed(0),
+                direction:direction
+              })
+            }
+            console.log(result)
+          }
+        }
+        catch(error){
+          console.log('Could not get data from API.')
+          console.log(error)
+          setLoading(false)
+        }
       }
     }
     else{
-      console.log("Could no accept input")
+      console.log("Could not accept input")
     }
    
+  }
+
+
+  const getTime = (time, offset) =>{
+    let local_date = new Date(time*1000)
+    let utc = (local_date.getTime() + (local_date.getTimezoneOffset()*60*1000));
+    let nd = new Date(utc+(offset*1000))
+    console.log(nd.toLocaleTimeString())
+    let suffix = nd.toLocaleTimeString().slice(-2)
+    let time_nd = nd.toLocaleTimeString().slice(0,5)
+    if(time_nd.slice(-1)===":"){
+      time_nd = time_nd.slice(0,-1)
+    }
+    console.log(time_nd+' '+suffix)
+    return (time_nd+' '+suffix)
   }
   
 
@@ -264,6 +445,68 @@ function App() {
     setLocalTime(month+" "+ day + ", "+ time+' '+suffix)
   }
 
+
+  const checkWindDirection = (deg) => {
+    let direction=""
+    if(deg>=0 && deg<45){
+      direction = "E"
+    }
+    else if(deg>=45 && deg<90){
+      direction = "NE"
+    }
+    else if(deg===90){
+      direction = "N"
+    }
+    else if(deg>90 && deg<=135){
+      direction = "NW"
+    }
+    else if(deg>135 && deg<=180){
+      direction = "W"
+    }
+    else if(deg>180 && deg<=225){
+      direction = "SW"
+    }
+    else if(deg>225 && deg<=270){
+      direction = "S"
+    }
+    else if(deg>270 && deg<=315){
+      direction = "SE"
+    }
+    else{
+      direction = "E"
+    }
+    return direction
+  }
+
+  const handleChange = (event) => {
+    setSystem(event.target.value)
+    if(event.target.value==="imperial"){
+      console.log('imperial')
+      setUnit("°F")
+      setUnit2("mph")
+      setWeather(weather => ({
+        ...weather,
+        temp: (((weather.temp)*1.8)+32).toFixed(0),
+        minTemp: (((weather.minTemp)*1.8)+32).toFixed(0),
+        maxTemp: (((weather.maxTemp)*1.8)+32).toFixed(0),
+        windSpeed: ((weather.windSpeed)*0.63).toFixed(0)
+      }))
+    }
+    else{
+      console.log('metric')
+      console.log('imperial')
+      setUnit("°C")
+      setUnit2("km/h")
+      setWeather(weather => ({
+        ...weather,
+        temp: (((weather.temp)-32)*0.56).toFixed(0),
+        minTemp: (((weather.minTemp)-32)*0.56).toFixed(0),
+        maxTemp: (((weather.maxTemp)-32)*0.56).toFixed(0),
+        windSpeed: ((weather.windSpeed)*1.6).toFixed(0)
+      }))
+    }
+  }
+
   if(loading){
     return(
       <div className="app">
@@ -273,6 +516,12 @@ function App() {
             search: search,
             query: query,
             setQuery: setQuery, 
+          }
+        }}/>
+        <UnitOptions {...{
+          props:{
+            handleChange:handleChange,
+            unit: system
           }
         }}/>
         <CardLoading/>
@@ -292,6 +541,12 @@ function App() {
             setQuery: setQuery, 
           }
         }}/>
+        <UnitOptions {...{
+          props:{
+            handleChange:handleChange,
+            unit: system
+          }
+        }}/>
           <CardError/>
         </div>
       </div>
@@ -309,6 +564,12 @@ function App() {
             setQuery: setQuery, 
           }
         }}/>
+      <UnitOptions {...{
+          props:{
+            handleChange:handleChange,
+            unit: system
+          }
+        }}/>
        <CardWeather {...{
          weather:{
           name: weather.name,
@@ -319,8 +580,15 @@ function App() {
           maxTemp: weather.maxTemp,
           minTemp: weather.minTemp,
           humidity: weather.humidity,
+          precipitation: weather.precipitation,
           day: day,
+          sunrise: weather.sunrise,
+          sunset: weather.sunset,
           WeatherIcon: WeatherIcon,
+          unit: unit,
+          windSpeed: weather.windSpeed,
+          unit2: unit2,
+          direction:weather.direction,
          }
        }}/>
       </div>

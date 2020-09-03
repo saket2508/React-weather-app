@@ -11,12 +11,17 @@ body{
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
 }
 
+.btn-custom:focus{
+  border-color: #f44336;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
 
-.container{
+
+/* .container{
   width: 100%;
   height: 100%;
   margin: 100px auto;
-}
+} */
 
 .location{
   padding-top: 10px;
@@ -67,9 +72,13 @@ body{
 .bottomStats{
   padding-top:1px;
   margin-left:15px;
+  display:flex;
+  flex-wrap:wrap;
+  flex-direction:row
 }
 
 .sunrise-sunset{
+  color:gray;
   padding-top:4px;
   margin-left:15px;
   display: flex;
@@ -79,6 +88,14 @@ body{
 .sunrise, .sunset{
   margin-right: 15px;
   color: gray;
+}
+
+.wind{
+  color:gray;
+  padding-top:4px;
+  margin-left:15px;
+  display: flex;
+  flex-direction: row;
 }
 
 .precipitation, .humidity{
@@ -91,7 +108,7 @@ body{
 }
 
 hr{
-  border-width: 2.0px;
+  border-width: 1.5px;
   border-color:gray;
 }
 
@@ -211,6 +228,6 @@ hr{
 .temp{
   color:#424242;
   font-weight: 300;
-  padding-left: 10px;
+  padding-left: 15px;
   font-size: 50px;
 }
