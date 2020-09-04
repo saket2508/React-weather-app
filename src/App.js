@@ -4,7 +4,6 @@ import CardWeather from './components/cardWeather';
 import CardError from './components/cardError';
 import SearchBar from './components/searchBar';
 import UnitOptions from './components/unitOptions';
-import { deepOrange } from '@material-ui/core/colors';
 
 
 const api= {
@@ -79,6 +78,7 @@ const WeatherIcon = (description, day) => {
 }
 
 function App() {
+
   const initialState= {
     name:"",
     country: "",
@@ -110,6 +110,7 @@ function App() {
   useEffect(() => {
     getData()
   },[])
+
 
 
   const getLocationData = async() => {
@@ -591,6 +592,7 @@ function App() {
           direction:weather.direction,
          }
        }}/>
+
       </div>
     </div>
   );

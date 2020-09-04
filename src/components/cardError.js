@@ -3,7 +3,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export default function CardError(){
     return(
-        <div className="row mb-3" style={{display:'flex', justifyContent:'center'}}>
+        <div className="row mb-4" style={{display:'flex', justifyContent:'center'}}>
           <div className="col-lg-5 col-sm-10">
             <div className="card border-0">
               <div className="card-header" style={{backgroundColor:'#f44336'}}>
@@ -13,7 +13,7 @@ export default function CardError(){
                   <div style={{paddingTop:185, paddingBottom:185}}>
                       <div style={{display:'flex',flexDirection:'row', justifyContent:'center'}}>
                         <ErrorOutlineIcon style={{paddingBottom:5, color:'#dc3545'}}/>
-                        <h6 className="text-danger" style={{fontWeight:'500', marginLeft:3}}>Please enter a valid city...</h6>
+                        <h5 className="text-danger" style={{fontWeight:'500', marginLeft:3}}>Please enter a valid city...</h5>
                       </div>
                   </div>
               </div>

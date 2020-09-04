@@ -1,14 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+function AlertInfo(props){
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 
 export default function SearchBar({ props }){
+
+    const classes = useStyles();
+    const [ alert, setAlert ] = useState(true)
+
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setAlert(false);
+    };
+
     return(
-        <div className="row" style={{display:'flex', marginBottom: 20, marginTop:40, justifyContent:'center'}}>
+        <React.Fragment>
+          <div className="row" style={{display:'flex', marginBottom: 20, marginTop:40, justifyContent:'center'}}>
           <div className="col-lg-4 col-md-6 col-sm-8">
             <div className="input-group input-group-sm">
-  
                 <input 
                     id="city"
                     name="city"
@@ -19,10 +46,6 @@ export default function SearchBar({ props }){
                     aria-describedby="weather-input"
                     onChange={e => props.setQuery(e.target.value)}
                     value={props.query}
-                    data-toggle="tooltip" 
-                    data-placement="bottom" 
-                    data-html="true"
-                    title="If you don't see the place you searched for, try adding its country code or zip code at the end. Ex: Alberta, CA "
                     />
       
                 <div className="input-group-append">
@@ -30,8 +53,18 @@ export default function SearchBar({ props }){
                     <SearchIcon style={{color:'#fff', fontSize:'20'}}/>
                   </button>
                 </div>
+                
             </div>
           </div>
         </div>
+
+        <div>
+          <Snackbar transitionDuration={{enter:3000}} open={alert} onClose={handleClose}>
+          <AlertInfo onClose={handleClose} severity="info" color="error">
+            Tip: If you don't see the place you searched for, try adding its country or zip code at the end, Ex: Alberta, CA
+          </AlertInfo>
+        </Snackbar>
+        </div>
+        </React.Fragment>
     )
 }

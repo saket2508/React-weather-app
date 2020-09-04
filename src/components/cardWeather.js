@@ -39,7 +39,7 @@ export default function CardWeather({ weather }){
   const classes = useStyles();
   const bull = <span>•</span>
     return(
-      <div className="row mb-3" style={{display:'flex',justifyContent:'center'}}>
+      <div className="row mb-4" style={{display:'flex',justifyContent:'center'}}>
       <div className="col-lg-5 col-sm-10">
       <div class="card border-0">
         <div className="card-header" style={{backgroundColor:'#f44336'}}>
