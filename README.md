@@ -1,7 +1,7 @@
 
 ## React weather app
 
-1. #### A simple weather app made with React.js. You can see weather info for your current location as soon as the site loads(Location access needed). You can also search for any specific city/town/country to see info of its weather. The site is live [here](https://react-weather-app-saket2508.netlify.app/)
+1. #### A simple weather app made with React.js. You can see weather info for your current location as soon as the site loads(Location access needed). You can also search for a specific city/town/country to see info of its weather. The site is live [here](https://react-weather-app-saket2508.netlify.app/)
 
 
 2. #### Uses [OpenWeather API](https://openweathermap.org/api) for live weather data.
